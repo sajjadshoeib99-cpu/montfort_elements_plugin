@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
 import { Brand } from "./Brand";
 import { NAV_LINKS, PHONE } from "@/lib/site";
+import { HERO_COPY } from "@/lib/content";
 import heroVideo from "@/assets/hero-scrub.mp4";
 import heroPoster from "@/assets/hero-poster.jpg";
 
@@ -24,6 +25,7 @@ export default function Hero() {
   const runwayRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -125,8 +127,8 @@ export default function Hero() {
     };
     video.addEventListener("seeked", onSeeked);
 
-    // Where the browser supports it, draw on the presented frame instead — that
-    // is the earliest moment the decoded picture is actually available.
+    // Where supported, draw on the presented frame instead — that is the
+    // earliest moment the decoded picture is actually available.
     const onVideoFrame = () => {
       drawVideoFrame();
       rvfcId = video.requestVideoFrameCallback?.(onVideoFrame) ?? 0;
@@ -161,10 +163,16 @@ export default function Hero() {
           `translate3d(0, 0, ${depth.toFixed(2)}px) rotateX(${tilt.toFixed(3)}deg) scale(${scale.toFixed(4)})`;
       }
 
+      // The headline sits above the house and dissolves as the camera moves in.
       const content = contentRef.current;
       if (content) {
-        content.style.opacity = clamp(1 - p * 1.5, 0, 1).toFixed(3);
-        content.style.transform = `translate3d(0, ${(p * -38).toFixed(2)}px, 0)`;
+        content.style.opacity = clamp(1 - p * 2.2, 0, 1).toFixed(3);
+        content.style.transform = `translate3d(0, ${(p * -26).toFixed(2)}px, 0)`;
+      }
+
+      const hint = hintRef.current;
+      if (hint) {
+        hint.style.opacity = clamp(1 - p * 3, 0, 1).toFixed(3);
       }
 
       const duration = video.duration;
@@ -197,7 +205,7 @@ export default function Hero() {
             playsInline
             preload="auto"
             disablePictureInPicture
-            aria-label="Aerial view approaching a modern home"
+            aria-label="نمای هوایی از نزدیک شدن به یک خانهٔ مدرن"
           />
           <canvas className="hero-canvas" ref={canvasRef} aria-hidden="true" />
         </div>
@@ -222,13 +230,13 @@ export default function Hero() {
 
           <a className="phone-link" href={`tel:${PHONE.replace(/[^+\d]/g, "")}`}>
             <Phone size={15} />
-            <span>{PHONE}</span>
+            <span dir="ltr">{PHONE}</span>
           </a>
 
           <button
             className="menu-button"
             type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((open) => !open)}
           >
@@ -237,14 +245,18 @@ export default function Hero() {
         </header>
 
         <div className="hero-content" ref={contentRef}>
+          <p className="hero-eyebrow">{HERO_COPY.eyebrow}</p>
           <h1>
-            Find your place
-            <br className="desktop-break" /> on the horizon
+            {HERO_COPY.titleLines[0]}
+            <br className="desktop-break" />
+            {HERO_COPY.titleLines[1]}
           </h1>
-          <p>
-            A boutique agency for exceptional homes — curating residences, land and
-            investments across the coast, the mountains and the city.
-          </p>
+          <p className="hero-subtitle">{HERO_COPY.subtitle}</p>
+        </div>
+
+        <div className="hero-hint" ref={hintRef}>
+          <span>برای ورود اسکرول کنید</span>
+          <span className="hero-hint-line" aria-hidden="true" />
         </div>
       </div>
     </section>

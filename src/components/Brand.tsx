@@ -10,11 +10,11 @@ export function BrandMark({ className }: { className?: string }) {
 
 export function Brand() {
   return (
-    <a className="brand" href="#top" aria-label="Horizon Real Estate home">
+    <a className="brand" href="#top" aria-label="هورایزن — املاک لوکس">
       <BrandMark />
       <span className="brand-copy">
-        <strong>HORIZON</strong>
-        <small>REAL ESTATE</small>
+        <strong>هورایزن</strong>
+        <small>املاک لوکس</small>
       </span>
     </a>
   );
