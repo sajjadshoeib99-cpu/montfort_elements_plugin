@@ -10,14 +10,21 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [overHero, setOverHero] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 28);
+    const onScroll = () => {
+      // The home hero is pinned to the top of the viewport for several screens while its
+      // clip scrubs, so the header stays transparent (light) until it actually leaves.
+      const stage = document.querySelector<HTMLElement>("[data-hero-stage]");
+      setOverHero(stage ? stage.getBoundingClientRect().bottom > 96 : false);
+      setScrolled(window.scrollY > 28);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -45,7 +52,7 @@ export function SiteHeader() {
     return location.pathname === path;
   };
 
-  const solid = scrolled;
+  const solid = scrolled && !overHero;
 
   return (
     <>
