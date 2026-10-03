@@ -228,3 +228,46 @@ a { color: inherit; text-decoration: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ------------------------------------------------------------------
+   Scroll-driven cinematic hero (video)
+   `.hero-scroll` is a tall runway; `.hero-stage` sticks to the viewport
+   while the user scrolls it, and scroll progress drives both the video's
+   currentTime and a 3D dolly-in transform (see src/components/Hero.tsx).
+   ------------------------------------------------------------------ */
+.hero-scroll { position: relative; height: 240vh; background: var(--primary); }
+.hero-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  color: var(--hero-foreground);
+  perspective: 1500px;
+  perspective-origin: 50% 42%;
+}
+.hero-media {
+  position: absolute;
+  inset: -8%;
+  z-index: 0;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.hero-media video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 56%;
+  pointer-events: none;
+}
+.hero-stage > .hero-shade { z-index: 1; }
+.hero-stage .hero-content { z-index: 2; will-change: transform, opacity; }
+
+@media (max-width: 780px) {
+  .hero-scroll { height: 190vh; }
+  .hero-media video { object-position: 60% center; }
+}

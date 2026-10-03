@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,52 +13,21 @@ import {
   Linkedin,
   Mail,
   MapPin,
-  Menu,
   Phone,
   ShieldCheck,
   Sparkles,
   Twitter,
   Users,
-  X,
 } from "lucide-react";
+
+import { Brand } from "@/components/Brand";
+import Hero from "@/components/Hero";
+import { EMAIL, PHONE } from "@/lib/site";
 
 import heroImg from "@/assets/hero.jpg";
 import aboutImg from "@/assets/about.jpg";
 import lakesideImg from "@/assets/property-lakeside.jpg";
 import triptychImg from "@/assets/property-triptych.jpg";
-
-const PHONE = "+1 (415) 555-0132";
-const EMAIL = "hello@horizon-estate.com";
-
-function BrandMark({ className }: { className?: string }) {
-  return (
-    <svg className={className ?? "brand-mark"} viewBox="0 0 38 44" aria-hidden="true">
-      <path d="M5 31 19 8l14 23" />
-      <path d="M11 31v-8h16v8" />
-      <path d="M3 37h32" />
-    </svg>
-  );
-}
-
-function Brand() {
-  return (
-    <a className="brand" href="#top" aria-label="Horizon Real Estate home">
-      <BrandMark />
-      <span className="brand-copy">
-        <strong>HORIZON</strong>
-        <small>REAL ESTATE</small>
-      </span>
-    </a>
-  );
-}
-
-const navLinks = [
-  { label: "Home", href: "#top", active: true },
-  { label: "About", href: "#about" },
-  { label: "Properties", href: "#properties" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
-];
 
 const properties = [
   { title: "Lakeside Residence", place: "Lake Como, Italy", price: "$4,250,000", crop: "" },
@@ -139,7 +108,6 @@ const footerLinks = {
 };
 
 export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const scrollTrack = (dir: 1 | -1) => {
@@ -150,53 +118,7 @@ export default function App() {
 
   return (
     <div id="top">
-      <section className="hero">
-        <img src={heroImg} alt="Modern hillside home at dusk" />
-        <div className="hero-shade" />
-
-        <header className="site-header">
-          <Brand />
-
-          <nav className={`main-nav ${menuOpen ? "is-open" : ""}`}>
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={link.active ? "active" : undefined}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          <a className="phone-link" href={`tel:${PHONE.replace(/[^+\d]/g, "")}`}>
-            <Phone size={15} />
-            <span>{PHONE}</span>
-          </a>
-
-          <button
-            className="menu-button"
-            type="button"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </header>
-
-        <div className="hero-content">
-          <h1>
-            Find your place
-            <br className="desktop-break" /> on the horizon
-          </h1>
-          <p>
-            A boutique agency for exceptional homes — curating residences, land and
-            investments across the coast, the mountains and the city.
-          </p>
-        </div>
-      </section>
+      <Hero />
 
       <main>
         <section id="about" className="about-section content-width">
